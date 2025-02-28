@@ -435,8 +435,6 @@ def dork(update: Update, context: CallbackContext) -> None:
 def set_admin(update: Update, context: CallbackContext) -> None:
     """Set the admin ID."""
     # Only allow setting admin if no admin is set yet or if the current user is admin
-    def set_admin(update: Update, context: CallbackContext) -> None:
-    """Set the admin ID."""
     
     global ADMIN_ID  # Move this to the top before using ADMIN_ID
 
