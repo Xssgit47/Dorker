@@ -435,27 +435,33 @@ def dork(update: Update, context: CallbackContext) -> None:
 def set_admin(update: Update, context: CallbackContext) -> None:
     """Set the admin ID."""
     # Only allow setting admin if no admin is set yet or if the current user is admin
-    user_id = update.effective_user.id
+    def set_admin(update: Update, context: CallbackContext) -> None:
+    """Set the admin ID."""
     
-    if ADMIN_ID == 0 or is_admin(user_id):
+    global ADMIN_ID  # Move this to the top before using ADMIN_ID
+
+    # Only allow setting admin if no admin is set yet or if the current user is admin
+    user_id = update.effective_user.id
+
+    if ADMIN_ID == 0 or is_admin(user_id):  # ADMIN_ID is used here
         if not context.args:
             update.message.reply_text("Please provide a user ID. Example: /setadmin 123456789")
             return
-            
+
         try:
             new_admin_id = int(context.args[0])
-            # We can't actually update the .env file programmatically in a secure way
-            # So we'll just inform the user to update it manually
             update.message.reply_text(
                 f"Admin ID set to {new_admin_id} for this session.\n\n"
                 f"To make this permanent, please update your .env file with:\n"
                 f"ADMIN_ID={new_admin_id}"
             )
-            # This would only be temporary until the bot restarts
-            global ADMIN_ID
+            
+            # Now assigning the new value
             ADMIN_ID = new_admin_id
+
         except ValueError:
             update.message.reply_text("Invalid user ID. Please provide a numeric ID.")
+
     else:
         update.message.reply_text("Only the current admin can change the admin ID.")
 
